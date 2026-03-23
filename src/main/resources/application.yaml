@@ -1,0 +1,10 @@
+server:
+  port: 8899
+spring:
+  application:
+    name: products
+  kafka:
+    producer:
+      bootstrap-servers: host.docker.internal:9092,host.docker.internal:9094,host.docker.internal:9096
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
