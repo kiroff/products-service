@@ -2,7 +2,7 @@ package org.kiroff.products;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.kiroff.products.events.ProductCreatedEvent;
+import org.kiroff.kafka.events.ProductCreatedEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

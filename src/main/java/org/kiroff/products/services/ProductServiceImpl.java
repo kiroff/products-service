@@ -1,7 +1,7 @@
 package org.kiroff.products.services;
 
+import org.kiroff.kafka.events.ProductCreatedEvent;
 import org.kiroff.products.arguments.CreateProductArgument;
-import org.kiroff.products.events.ProductCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService
 ////                .join();//to block/syncronze the client/request
 //        LOGGER.info("Created product with id {}", productId);
         final SendResult<String, ProductCreatedEvent> result = kafkaTemplate.send(
-                "batcata", productId, event).get();
+                "product-created-events-topic", productId, event).get();
         LOGGER.info("Sent to topic= {}, partition={}, offset={}", result.getRecordMetadata().topic(), result.getRecordMetadata().partition(), result.getRecordMetadata().offset());
         return productId;
     }
