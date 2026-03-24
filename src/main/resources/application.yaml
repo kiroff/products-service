@@ -8,3 +8,25 @@ spring:
       bootstrap-servers: host.docker.internal:9092,host.docker.internal:9094,host.docker.internal:9096
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      acks: all
+#      retries: 10
+      properties:
+#        retry:
+#          backoff:
+#            ms: 500
+        delivery:
+          timeout:
+            ms: 120000
+        enable:
+          idempotence: true #Default
+        max:
+          in:
+            flight:
+              requests:
+                per:
+                  connection: 5  #Default should not be > 5 if acks=all
+        linger:
+          ms: 0
+        request:
+          timeout:
+            ms: 3000

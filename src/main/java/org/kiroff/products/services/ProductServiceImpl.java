@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService
 ////                .join();//to block/syncronze the client/request
 //        LOGGER.info("Created product with id {}", productId);
         final SendResult<String, ProductCreatedEvent> result = kafkaTemplate.send(
-                "product-created-events-topic", productId, event).get();
+                "batcata", productId, event).get();
         LOGGER.info("Sent to topic= {}, partition={}, offset={}", result.getRecordMetadata().topic(), result.getRecordMetadata().partition(), result.getRecordMetadata().offset());
         return productId;
     }
