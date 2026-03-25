@@ -7,4 +7,6 @@ import java.util.concurrent.ExecutionException;
 public interface ProductService
 {
     String createProduct(CreateProductArgument product) throws ExecutionException, InterruptedException;
+
+    String getProduct(String productId);
 }

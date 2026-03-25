@@ -44,4 +44,11 @@ public class ProductServiceImpl implements ProductService
         LOGGER.info("Sent to topic= {}, partition={}, offset={}", result.getRecordMetadata().topic(), result.getRecordMetadata().partition(), result.getRecordMetadata().offset());
         return productId;
     }
+
+    @Override
+    public String getProduct(String productId)
+    {
+        return "Mock product " + productId;
+    }
+
 }
