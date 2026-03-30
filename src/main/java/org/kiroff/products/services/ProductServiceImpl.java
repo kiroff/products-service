@@ -1,5 +1,6 @@
 package org.kiroff.products.services;
 
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.kiroff.kafka.events.ProductCreatedEvent;
 import org.kiroff.products.arguments.CreateProductArgument;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -23,7 +25,7 @@ public class ProductServiceImpl implements ProductService
     }
 
     @Override
-    public String createProduct(CreateProductArgument product) throws ExecutionException, InterruptedException
+    public String createProduct(CreateProductArgument product, String messageId) throws ExecutionException, InterruptedException
     {
         final String productId = UUID.randomUUID().toString();
 
@@ -39,8 +41,9 @@ public class ProductServiceImpl implements ProductService
 //                });
 ////                .join();//to block/syncronze the client/request
 //        LOGGER.info("Created product with id {}", productId);
-        final SendResult<String, ProductCreatedEvent> result = kafkaTemplate.send(
-                "product-created-events-topic", productId, event).get();
+        ProducerRecord<String, ProductCreatedEvent> producerRecord = new ProducerRecord<>("product-created-events-topic", productId, event);
+        producerRecord.headers().add("messageId", Optional.ofNullable(messageId).orElse(UUID.randomUUID().toString()).getBytes());
+        final SendResult<String, ProductCreatedEvent> result = kafkaTemplate.send(producerRecord).get();
         LOGGER.info("Sent to topic= {}, partition={}, offset={}", result.getRecordMetadata().topic(), result.getRecordMetadata().partition(), result.getRecordMetadata().offset());
         return productId;
     }
